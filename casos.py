@@ -1,28 +1,49 @@
+import numpy as np
 import matplotlib.pyplot as plt
-import math
+i=0
 
-def DOS_PLOTY():
-    x=list()
-    y=list()
-    data=list()
-    DOS=open('casos_ma.py','r')
-    for line in DOS:
-        x.append(float(line.split()[0]))
-        y.append(float(line.split()[1]))
+cases=[[],[]]
+deaths=[[],[]]
+suspects=[[],[]]
+discarded=[[],[]]
+cod_day=[[],[]]
+date=[[],[]]
 
-    plt.xlabel('E/eV', fontsize=16)
-    plt.ylabel('DOS*eV', fontsize=16)
+color = ['k-', 'r-']
+data_Ma = open('Pa.dat', 'r')
+data_Pa = open('Ma.dat', 'r')
 
-    plt.axis([-10, 10, 0, 300])
-    plt.plot(x,y,'k-',linewidth=0.5) # plot
-    plt.axvline(x=0, ymin=0, ymax=1000,color='c', linestyle='--')
-    plt.savefig('dos_-10_10.png', format='png')
-    plt.show()
+estados = [ data_Ma, data_Pa ]
+
+plt.axis([0,29,0,1000])
+#x = np.linspace(1, len(cases), len(cases))
+
+for i in range(0,2,1): 
+        for line in estados[i]:
+            if line.strip() != '' and '#' not in line.strip():
+                cases[i].append(float(line.split()[0]))
+                cod_day[i].append(float(line.split()[4]))
+                deaths[i].append(float(line.split()[1]))
+                date[i].append(line.split()[5])
 
 
-data = open('Ma.dat', 'r')
-for line in data:
+arrayx = np.arange(cod_day[1][0], cod_day[1][len(cod_day[1]) -1 ] + 3)
+arrayy = np.arange(0,1000,100)
+plt.xticks(arrayx,[str(a) for a in date[1]],rotation=45)
+plt.yticks(arrayy,[str(b) for b in arrayy])
+
+##axis properties and generator
+plt.xlabel('dias de contagio', fontsize=16)
+plt.ylabel('casos confirmados de COVID-19', fontsize=16)
+
+plt.plot(cod_day[0], cases[0],'b-', label = 'Pará')
+plt.scatter(cod_day[0],cases[0],color ='red')
+
+plt.plot(cod_day[1], cases[1],'k-', label = 'Maranhão')
+plt.scatter(cod_day[1],cases[1],color='red')
+
+plt.legend(bbox_to_anchor=(0.112, 1), loc='upper right', borderaxespad=0.)
 
 
-
-
+plt.grid()
+plt.show()
