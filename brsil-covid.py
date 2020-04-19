@@ -1,10 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-#estado = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] #
-# for brasil
+estado = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] 
 
-estado = ['MA']
 date        = []
 obitosNovos = []
 obitosAcumulados = []
@@ -22,15 +20,15 @@ for i in range(0,limit):
     obitosAcumulados.append([])
     for line in arquivo:
         if line.strip() !='' and '#' not in line.strip() and estado[i] in line.strip():
-            date[i].append(line.split(';')[1])
-            casosNovos[i].append(float(line.split(';')[2]))
-            casosAcumulados[i].append(float(line.split(';')[3]))
-            obitosNovos[i].append(float(line.split(';')[4]))
-            obitosAcumulados[i].append(float(line.split(';')[5]))
+            date[i].append(line.split(',')[1])
+            casosNovos[i].append(float(line.split(',')[2]))
+            casosAcumulados[i].append(float(line.split(',')[3]))
+            obitosNovos[i].append(float(line.split(',')[4]))
+            obitosAcumulados[i].append(float(line.split(',')[5]))
     arquivo.close()
 
+plt.axis([0,len(date[0]) + 2,0,15000])
 
-plt.axis([0,len(date[0]) + 2,0,2000])
 x = np.arange(0, len(date[0]))
 plt.xticks(x,[str(a) for a in date[0]],rotation=65, fontsize = 8)
 
